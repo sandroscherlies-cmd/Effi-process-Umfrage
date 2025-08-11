@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effi-process - Umfrage zur Arbeitsplatz-Automatisierung</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff5f0 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .title {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+        
+        .title-gradient {
+            background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .survey-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .intro-text {
+            background: linear-gradient(135deg, #f3f4f6 0%, #fef3e2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 4px solid;
+            border-image: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%) 1;
+        }
+        
+        .question-group {
+            margin-bottom: 35px;
+        }
+        
+        .question {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 15px;
+        }
+        
+        .required {
+            color: #ef4444;
+        }
+        
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .task-item {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .task-item:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+        }
+        
+        .task-item input[type="checkbox"],
+        .task-item input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .task-item input[type="checkbox"]:checked + .task-content,
+        .task-item input[type="radio"]:checked + .task-content {
+            background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%);
+            color: white;
+            transform: scale(1.02);
+        }
+        
+        .task-content {
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .task-description {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .text-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .char-counter {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .rating-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .rating-option {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .rating-option:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-1px);
+        }
+        
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+        
+        .rating-option input[type="radio"]:checked + span {
+            background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%);
+            color: white;
+            border-radius: 6px;
+            padding: 5px 10px;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6b7280;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .success-message {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            display: none;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .title {
+                font-size: 32px;
+            }
+            
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .rating-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <div class="logo-text">Effi-process</div>
+            </div>
+            <h1 class="title">Gestalten Sie Ihren <span class="title-gradient">digitalen Arbeitsplatz</span> mit!</h1>
+            <p class="subtitle">Als Unternehmen entwickeln wir maßgeschneiderte Automatisierungslösungen. Ihre Meinung hilft uns zu verstehen, was lokale Unternehmen wirklich brauchen!</p>
+        </div>
+
+        <div class="info-box">
+            <h3>📋 So einfach geht's</h3>
+            <p><strong>1.</strong> Formular ausfüllen → <strong>2.</strong> "Text kopieren" klicken → <strong>3.</strong> In Ihre E-Mail einfügen</p>
+            <div style="margin-top: 10px; font-size: 14px; opacity: 0.9;">
+                Funktioniert mit Gmail, Outlook.com, Yahoo Mail, etc.
+            </div>
+        </div>
+
+        <div id="successMessage" class="success-message">
+            <h3>✅ Text kopiert!</h3>
+            <p id="successText">Ihre Umfrage wurde in die Zwischenablage kopiert!</p>
+            <div id="copyResult" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                <p style="font-size: 16px; margin-bottom: 10px;"><strong>📧 Jetzt E-Mail senden:</strong></p>
+                <div style="font-size: 14px; text-align: left; max-width: 500px; margin: 0 auto;">
+                    <p><strong>1.</strong> Öffnen Sie Ihr E-Mail-Programm (Gmail, Outlook.com, Yahoo, etc.)</p>
+                    <p><strong>2.</strong> Neue E-Mail an: <strong>info@effi-process.com</strong></p>
+                    <p><strong>3.</strong> Text einfügen: <strong>Cmd+V</strong> (Mac) oder <strong>Strg+V</strong> (Windows)</p>
+                    <p><strong>4.</strong> Senden klicken ✅</p>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.3); border-radius: 6px; font-size: 13px;">
+                    <strong>💡 Tipp:</strong> Der Text enthält bereits den Betreff und alle Ihre Antworten formatiert.
+                </div>
+                <div style="margin-top: 15px; text-align: center;">
+                    <button type="button" class="submit-btn" onclick="recopyText()" style="background: #059669; font-size: 14px; padding: 10px 25px; margin-right: 10px;">
+                        🔄 Text erneut kopieren
+                    </button>
+                    <button type="button" class="submit-btn" onclick="copyEmail()" style="background: #0891b2; font-size: 14px; padding: 10px 25px;">
+                        📧 E-Mail kopieren
+                    </button>
+                    <div style="margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.8);">
+                        Falls Sie versehentlich etwas anderes kopiert haben oder nur die E-Mail-Adresse brauchen
+                    </div>
+                </div>
+            </div>
+            <div id="downloadResult" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 8px; display: none;">
+                <p><strong>Datei wurde heruntergeladen!</strong></p>
+                <p style="font-size: 14px; margin-top: 5px;">
+                    Senden Sie die heruntergeladene Datei als Anhang an <strong>info@effi-process.com</strong>
+                </p>
+            </div>
+        </div>
+
+        <form id="surveyForm" class="survey-card">
+            <div class="intro-text">
+                <strong>🚀 Über uns:</strong> Effi-process entwickelt keine Standard-Software, sondern hört zuerst zu: Was beschäftigt Sie wirklich? Welche Aufgaben rauben Ihnen Zeit? Basierend auf Ihrem Feedback entwickeln wir dann passende Automatisierungslösungen für lokale Unternehmen.
+            </div>
+
+            <!-- Persönliche Informationen -->
+            <div class="section-title">
+                <div class="section-icon">👤</div>
+                Über Sie
+            </div>
+            
+            <div class="question-group">
+                <div class="question">Firmenname <span class="required">*</span></div>
+                <input type="text" name="company" id="company" class="text-input" placeholder="Name Ihres Unternehmens" required>
+            </div>
+            
+            <div class="question-group">
+                <div class="question">In welchem Bereich arbeiten Sie hauptsächlich? <span class="required">*</span></div>
+                <div class="task-grid">
+                    <label class="task-item">
+                        <input type="radio" name="department" value="Verwaltung" required>
+                        <div class="task-content">
+                            <div class="task-title">📋 Verwaltung</div>
+                            <div class="task-description">Allgemeine Bürotätigkeiten</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="radio" name="department" value="Personalwesen" required>
+                        <div class="task-content">
+                            <div class="task-title">👥 Personalwesen</div>
+                            <div class="task-description">HR & Recruiting</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="radio" name="department" value="Finanzen" required>
+                        <div class="task-content">
+                            <div class="task-title">💰 Finanzen</div>
+                            <div class="task-description">Buchhaltung & Controlling</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="radio" name="department" value="Marketing" required>
+                        <div class="task-content">
+                            <div class="task-title">📢 Marketing</div>
+                            <div class="task-description">Kommunikation & Vertrieb</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="radio" name="department" value="IT" required>
+                        <div class="task-content">
+                            <div class="task-title">💻 IT</div>
+                            <div class="task-description">Technik & Support</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="radio" name="department" value="Sonstiges" required>
+                        <div class="task-content">
+                            <div class="task-title">🔧 Sonstiges</div>
+                            <div class="task-description">Anderer Bereich</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Automatisierungswünsche -->
+            <div class="section-title">
+                <div class="section-icon">🤖</div>
+                Welche Aufgaben würden Sie gerne automatisieren?
+            </div>
+            
+            <div class="question-group">
+                <div class="question">Wählen Sie alle Aufgaben aus, bei denen Sie sich Automatisierung wünschen würden:</div>
+                <div class="task-grid">
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="Dateneingabe">
+                        <div class="task-content">
+                            <div class="task-title">📊 Dateneingabe</div>
+                            <div class="task-description">Übertragung von Daten zwischen Systemen</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="E-Mail-Verwaltung">
+                        <div class="task-content">
+                            <div class="task-title">📧 E-Mail-Verwaltung</div>
+                            <div class="task-description">Sortierung und Weiterleitung von E-Mails</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="Terminplanung">
+                        <div class="task-content">
+                            <div class="task-title">📅 Terminplanung</div>
+                            <div class="task-description">Koordination von Meetings und Terminen</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="Berichtserstellung">
+                        <div class="task-content">
+                            <div class="task-title">📈 Berichtserstellung</div>
+                            <div class="task-description">Automatische Report-Generierung</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="Rechnungsverarbeitung">
+                        <div class="task-content">
+                            <div class="task-title">🧾 Rechnungsverarbeitung</div>
+                            <div class="task-description">Erfassung und Prüfung von Rechnungen</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="Dokumentenverwaltung">
+                        <div class="task-content">
+                            <div class="task-title">📁 Dokumentenverwaltung</div>
+                            <div class="task-description">Ablage und Organisation von Dateien</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="Kundenkommunikation">
+                        <div class="task-content">
+                            <div class="task-title">💬 Kundenkommunikation</div>
+                            <div class="task-description">Standard-Antworten und Follow-ups</div>
+                        </div>
+                    </label>
+                    <label class="task-item">
+                        <input type="checkbox" name="tasks" value="Bestandsverwaltung">
+                        <div class="task-content">
+                            <div class="task-title">📦 Bestandsverwaltung</div>
+                            <div class="task-description">Überwachung und Nachbestellung</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Priorität -->
+            <div class="question-group">
+                <div class="question">Wie hoch ist Ihr Interesse an Automatisierung generell? <span class="required">*</span></div>
+                <div class="rating-container">
+                    <label class="rating-option">
+                        <input type="radio" name="interest" value="1" required>
+                        <span>😴 Sehr gering</span>
+                    </label>
+                    <label class="rating-option">
+                        <input type="radio" name="interest" value="2" required>
+                        <span>😐 Gering</span>
+                    </label>
+                    <label class="rating-option">
+                        <input type="radio" name="interest" value="3" required>
+                        <span>🤔 Mittel</span>
+                    </label>
+                    <label class="rating-option">
+                        <input type="radio" name="interest" value="4" required>
+                        <span>😊 Hoch</span>
+                    </label>
+                    <label class="rating-option">
+                        <input type="radio" name="interest" value="5" required>
+                        <span>🚀 Sehr hoch</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Offene Fragen -->
+            <div class="section-title">
+                <div class="section-icon">💭</div>
+                Ihre Gedanken
+            </div>
+            
+            <div class="question-group">
+                <div class="question">Welche Aufgaben kosten Sie täglich am meisten Zeit und könnten eventuell automatisiert werden? <span class="required">*</span></div>
+                <textarea class="text-input" name="time_consuming_task" id="timeConsumingTask" placeholder="Beschreiben Sie hier die Aufgaben, die täglich viel Zeit in Anspruch nehmen..." required maxlength="500"></textarea>
+                <div class="char-counter" id="timeConsumingCounter">0/500 Zeichen</div>
+            </div>
+
+            <div class="question-group">
+                <div class="question">Was sind Ihre größten Bedenken bezüglich Automatisierung? (Optional)</div>
+                <textarea class="text-input" name="concerns" id="concerns" placeholder="Teilen Sie uns Ihre Gedanken mit..." maxlength="400"></textarea>
+                <div class="char-counter" id="concernsCounter">0/400 Zeichen</div>
+            </div>
+
+            <div class="question-group">
+                <div class="question">Haben Sie Ideen für weitere Automatisierungsmöglichkeiten?</div>
+                <textarea class="text-input" name="additional_ideas" id="additionalIdeas" placeholder="Ihre kreativen Ideen sind gefragt..." maxlength="400"></textarea>
+                <div class="char-counter" id="additionalIdeasCounter">0/400 Zeichen</div>
+            </div>
+
+            <div class="submit-section">
+                <button type="button" class="submit-btn" onclick="copyToClipboard()" style="font-size: 18px; padding: 18px 45px;">
+                    📋 Text kopieren & E-Mail senden
+                </button>
+                
+                <div style="margin-top: 20px; font-size: 14px; color: #666; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    Nach dem Klick öffnen Sie Ihr E-Mail-Programm (Gmail, Outlook, etc.), erstellen eine neue E-Mail an <strong>info@effi-process.com</strong> und fügen den Text mit <strong>Cmd+V</strong> (Mac) oder <strong>Strg+V</strong> (Windows) ein.
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <details style="cursor: pointer;">
+                        <summary style="color: #8b5cf6; font-weight: 600; font-size: 14px;">🔧 Alternative Optionen</summary>
+                        <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button type="button" class="submit-btn" style="background: #6b7280; font-size: 14px; padding: 10px 20px;" onclick="sendEmail()">
+                                📧 E-Mail-Programm
+                            </button>
+                            <button type="button" class="submit-btn" style="background: #0891b2; font-size: 14px; padding: 10px 20px;" onclick="downloadAsFile()">
+                                💾 Als Datei laden
+                            </button>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </form>
+
+        <div class="footer-note">
+            <strong>🔒 Datenschutz:</strong> Wir behandeln Ihre Daten mit größter Sorgfalt. Ihre Antworten helfen uns, Lösungen zu entwickeln, die wirklich gebraucht werden.
+        </div>
+    </div>
+
+    <script>
+        // Gespeicherte Umfragedaten für erneutes Kopieren
+        let savedSurveyData = null;
+
+        function validateForm() {
+            const company = document.getElementById('company').value.trim();
+            const department = document.querySelector('input[name="department"]:checked');
+            const interest = document.querySelector('input[name="interest"]:checked');
+            const timeTask = document.getElementById('timeConsumingTask').value.trim();
+
+            if (!company || !department || !interest || !timeTask) {
+                alert('❌ Bitte füllen Sie alle Pflichtfelder aus:\n\n- Firmenname\n- Arbeitsbereich\n- Interesse-Level\n- Zeitraubende Aufgaben');
+                return false;
+            }
+            return true;
+        }
+
+        function getSurveyData() {
+            const form = document.getElementById('surveyForm');
+            const formData = new FormData(form);
+            
+            const tasks = formData.getAll('tasks');
+            const concerns = formData.get('concerns') || '';
+            const additionalIdeas = formData.get('additional_ideas') || '';
+            const department = document.querySelector('input[name="department"]:checked');
+            const interest = document.querySelector('input[name="interest"]:checked');
+
+            const interestLabels = {
+                '1': 'Sehr gering', '2': 'Gering', '3': 'Mittel', '4': 'Hoch', '5': 'Sehr hoch'
+            };
+
+            return {
+                company: formData.get('company'),
+                department: department.value,
+                tasks: tasks,
+                interest: interestLabels[interest.value],
+                timeTask: formData.get('time_consuming_task'),
+                concerns: concerns,
+                additionalIdeas: additionalIdeas
+            };
+        }
+
+        function formatSurveyText(data) {
+            return `Betreff: Umfrage Arbeitsplatz-Automatisierung - ${data.company}
+
+Hallo Effi-process Team,
+
+anbei meine Antworten zur Umfrage über Arbeitsplatz-Automatisierung:
+
+=== UNTERNEHMENSDATEN ===
+Firmenname: ${data.company}
+Arbeitsbereich: ${data.department}
+Datum: ${new Date().toLocaleDateString('de-DE')}
+
+=== AUTOMATISIERUNGSWÜNSCHE ===
+Gewünschte Aufgaben: ${data.tasks.length > 0 ? data.tasks.join(', ') : 'Keine ausgewählt'}
+Interesse-Level: ${data.interest}
+
+=== ZEITRAUBENDE AUFGABEN ===
+${data.timeTask}
+
+=== BEDENKEN ===
+${data.concerns || 'Keine Angabe'}
+
+=== ZUSÄTZLICHE IDEEN ===
+${data.additionalIdeas || 'Keine Angabe'}
+
+Mit freundlichen Grüßen
+${data.company}`;
+        }
+
+        function sendEmail() {
+            if (!validateForm()) return;
+
+            const data = getSurveyData();
+            const surveyText = formatSurveyText(data);
+
+            // E-Mail-Link erstellen
+            const subject = encodeURIComponent('Umfrage Arbeitsplatz-Automatisierung - ' + data.company);
+            const body = encodeURIComponent(surveyText);
+            const mailtoLink = `mailto:info@effi-process.com?subject=${subject}&body=${body}`;
+
+            // Versuche E-Mail-Programm zu öffnen
+            try {
+                window.location.href = mailtoLink;
+                
+                // Erfolgs-Nachricht anzeigen
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successText').textContent = 'E-Mail-Programm sollte sich öffnen. Falls nicht, nutzen Sie eine der anderen Optionen.';
+                document.getElementById('surveyForm').style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                alert('E-Mail-Programm konnte nicht geöffnet werden. Bitte verwenden Sie eine der anderen Optionen.');
+            }
+        }
+
+        function copyToClipboard() {
+            if (!validateForm()) return;
+
+            const data = getSurveyData();
+            savedSurveyData = data; // Daten für erneutes Kopieren speichern
+            const surveyText = formatSurveyText(data);
+
+            // Text in die Zwischenablage kopieren
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(surveyText).then(function() {
+                    showCopySuccess();
+                }).catch(function() {
+                    // Fallback für ältere Browser
+                    fallbackCopyToClipboard(surveyText);
+                });
+            } else {
+                // Fallback für ältere Browser
+                fallbackCopyToClipboard(surveyText);
+            }
+        }
+
+        function copyEmail() {
+            const email = 'info@effi-process.com';
+
+            // E-Mail-Adresse in die Zwischenablage kopieren
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(email).then(function() {
+                    // Kurze Bestätigung anzeigen
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = '✅ E-Mail kopiert!';
+                    button.style.background = '#10b981';
+                    
+                    setTimeout(function() {
+                        button.textContent = originalText;
+                        button.style.background = '#0891b2';
+                    }, 2000);
+                }).catch(function() {
+                    fallbackCopyToClipboard(email);
+                });
+            } else {
+                fallbackCopyToClipboard(email);
+            }
+        }
+
+        function recopyText() {
+            if (!savedSurveyData) {
+                alert('❌ Keine gespeicherten Daten gefunden. Bitte füllen Sie das Formular erneut aus.');
+                return;
+            }
+
+            const surveyText = formatSurveyText(savedSurveyData);
+
+            // Text erneut in die Zwischenablage kopieren
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(surveyText).then(function() {
+                    // Kurze Bestätigung anzeigen
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = '✅ Erneut kopiert!';
+                    button.style.background = '#10b981';
+                    
+                    setTimeout(function() {
+                        button.textContent = originalText;
+                        button.style.background = '#059669';
+                    }, 2000);
+                }).catch(function() {
+                    fallbackCopyToClipboard(surveyText);
+                });
+            } else {
+                fallbackCopyToClipboard(surveyText);
+            }
+        }
+
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showCopySuccess();
+            } catch (err) {
+                alert('Kopieren fehlgeschlagen. Bitte verwenden Sie die Download-Option.');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showCopySuccess() {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('copyResult').style.display = 'block';
+            document.getElementById('downloadResult').style.display = 'none';
+            document.getElementById('surveyForm').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function downloadAsFile() {
+            if (!validateForm()) return;
+
+            const data = getSurveyData();
+            const surveyText = formatSurveyText(data);
+
+            // Datei erstellen und herunterladen
+            const blob = new Blob([surveyText], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Effi-process_Umfrage_${data.company.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}.txt`;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            // Erfolgs-Nachricht anzeigen
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('successText').textContent = 'Datei wurde heruntergeladen!';
+            document.getElementById('downloadResult').style.display = 'block';
+            document.getElementById('copyResult').style.display = 'none';
+            document.getElementById('surveyForm').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Zeichenzähler
+        function setupCounter(textareaId, counterId, maxLength) {
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            
+            if (textarea && counter) {
+                textarea.addEventListener('input', function() {
+                    const length = this.value.length;
+                    counter.textContent = `${length}/${maxLength} Zeichen`;
+                    counter.style.color = length > maxLength * 0.9 ? '#f59e0b' : '#6b7280';
+                });
+            }
+        }
+
+        // Radio-Button und Checkbox Styling
+        function setupInteractivity() {
+            // Checkbox Animationen
+            const checkboxItems = document.querySelectorAll('.task-item input[type="checkbox"]');
+            checkboxItems.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const content = this.nextElementSibling;
+                    if (this.checked) {
+                        content.style.background = 'linear-gradient(135deg, #8b5cf6 0%, #f97316 100%)';
+                        content.style.color = 'white';
+                    } else {
+                        content.style.background = '';
+                        content.style.color = '';
+                    }
+                });
+            });
+            
+            // Radio-Button Animationen
+            const radioItems = document.querySelectorAll('.task-item input[type="radio"]');
+            radioItems.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const name = this.name;
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                        const content = r.nextElementSibling;
+                        if (content) {
+                            content.style.background = '';
+                            content.style.color = '';
+                        }
+                    });
+                    
+                    const content = this.nextElementSibling;
+                    if (content) {
+                        content.style.background = 'linear-gradient(135deg, #8b5cf6 0%, #f97316 100%)';
+                        content.style.color = 'white';
+                    }
+                });
+            });
+
+            // Rating Animationen
+            const ratingItems = document.querySelectorAll('.rating-option input[type="radio"]');
+            ratingItems.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const name = this.name;
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                        const span = r.nextElementSibling;
+                        if (span) {
+                            span.style.background = '';
+                            span.style.color = '';
+                            span.style.borderRadius = '';
+                            span.style.padding = '';
+                        }
+                    });
+                    
+                    const span = this.nextElementSibling;
+                    if (span) {
+                        span.style.background = 'linear-gradient(135deg, #8b5cf6 0%, #f97316 100%)';
+                        span.style.color = 'white';
+                        span.style.borderRadius = '6px';
+                        span.style.padding = '5px 10px';
+                    }
+                });
+            });
+        }
+
+        // Initialisierung beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCounter('timeConsumingTask', 'timeConsumingCounter', 500);
+            setupCounter('concerns', 'concernsCounter', 400);
+            setupCounter('additionalIdeas', 'additionalIdeasCounter', 400);
+            setupInteractivity();
+        });
+    </script>
+</body>
+</html>
